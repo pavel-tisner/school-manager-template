@@ -1,6 +1,7 @@
 # School Management CLI
 
 This is a template for a school management CLI application. The application will allow users to manage courses and students through a command-line interface.
+Project specification and requirements can be found in the following link: https://hub.hackyourfuture.nl/core-program-week-7
 
 ## Setup
 
