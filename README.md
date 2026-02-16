@@ -1,6 +1,6 @@
 # School Management CLI
 
-This is a template for a school management CLI application. The application will allow users to manage courses and students through a command-line interface.
+This is a template for a school management CLI application. The application will allow users to manage courses and trainees through a command-line interface.
 Project specification and requirements can be found in the following link: https://hub.hackyourfuture.nl/core-program-week-7
 
 ## Setup
@@ -32,14 +32,14 @@ As you can see, the application is divided into several components:
 
 - **Course/Trainee Command handler**: Reads the subcommand and calls the appropriate function with the arguments.
 
-- **Storage**: Responsible for saving and loading data from a file. This will be used to persist the courses and students data.
+- **Storage**: Responsible for saving and loading data from a file. This will be used to persist the courses and trainee data.
 
 ## Source files
 
-- `index.js`: The entry point of your application. It will ask the user for input, parse the command, and call the appropriate handler student handler / mentor handler based on the command.
+- `index.js`: The entry point of your application. It will ask the user for input, parse the command, and call the appropriate handler trainees handler / mentor handler based on the command.
 - `command-parser.js`: Contains the logic to parse (read and process) the user input.
-- `studentCommands.js`: Contains functions related to student management, such as adding a student, listing students, etc.
+- `traineeCommands.js`: Contains functions related to trainee management, such as adding a trainee, listing trainees, etc.
 - `courseCommands.js`: Contains functions related to course management, such as adding a course, listing courses, etc.
-- `storage.js`: Contains functions to save and load data from a JSON file, which will be used to persist the courses and students data.
+- `storage.js`: Contains functions to save and load data from a JSON file, which will be used to persist the courses and trainee data.
 
 You may create additional files if needed.
