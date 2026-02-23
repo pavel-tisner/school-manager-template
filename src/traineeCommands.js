@@ -1,7 +1,20 @@
 import { saveTraineeData, loadTraineeData } from './storage.js';
 
-function addTrainee() {
-  // TODO: Implement the logic
+function addTrainee(fullName) {
+  if (fullName.length !== 2) {
+    console.error('Must provide first and last name');
+    return false;
+  }
+  const [firstName, lastName] = fullName;
+  const trainees = loadTraineeData();
+  const newTrainee = {
+    id: Math.floor(Math.random() * 100000),
+    firstName,
+    lastName,
+  };
+  trainees.push(newTrainee);
+  saveTraineeData(trainees);
+  return newTrainee;
 }
 
 function updateTrainee() {

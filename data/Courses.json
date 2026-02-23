@@ -7,5 +7,41 @@
       12345,
       12346
     ]
+  },
+  {
+    "id": 87422,
+    "name": "Advanced JavaScript",
+    "startDate": "2026-03-15",
+    "participants": []
+  },
+  {
+    "id": 87423,
+    "name": "HTML & CSS Fundamentals",
+    "startDate": "2026-04-01",
+    "participants": []
+  },
+  {
+    "id": 87424,
+    "name": "React Basics",
+    "startDate": "2026-05-10",
+    "participants": []
+  },
+  {
+    "id": 87425,
+    "name": "Node.js Essentials",
+    "startDate": "2026-06-05",
+    "participants": []
+  },
+  {
+    "id": 87426,
+    "name": "Git & GitHub Workshop",
+    "startDate": "2026-07-20",
+    "participants": []
+  },
+  {
+    "id": 87427,
+    "name": "Fullstack Project Bootcamp",
+    "startDate": "2026-09-01",
+    "participants": []
   }
 ]
