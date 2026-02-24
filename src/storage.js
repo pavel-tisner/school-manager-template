@@ -22,7 +22,7 @@ export function loadTraineeData() {
   }
 }
 
-export function saveTraineeData() {
+export function saveTraineeData(trainees) {
   try {
     fs.writeFileSync(TRAINEE_DATA_FILE_PATH, JSON.stringify(trainees, null, 2));
     return true;
@@ -39,7 +39,7 @@ export function loadCourseData() {
     }
     const courses = fs.readFileSync(COURSE_DATA_FILE_PATH, 'utf8');
 
-    if (!trainees) {
+    if (!courses) {
       throw new Error('Courses list cannot be empty');
     }
 
@@ -51,9 +51,9 @@ export function loadCourseData() {
   }
 }
 
-export function saveCourseData() {
+export function saveCourseData(courses) {
   try {
-    fs.writeFileSync(COURSE_DATA_FILE_PATH, JSON.stringify(trainees, null, 2));
+    fs.writeFileSync(COURSE_DATA_FILE_PATH, JSON.stringify(courses, null, 2));
     return true;
   } catch (error) {
     console.error('Error saving courses:', error.message);
