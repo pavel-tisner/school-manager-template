@@ -1,5 +1,6 @@
 import { handleTraineeCommand } from './traineeCommands.js';
 import { handleCourseCommand } from './courseCommands.js';
+import chalk from 'chalk';
 
 export function parseCommand(userInput) {
   const [command, subcommand, ...rest] = userInput.split(' ');
@@ -8,6 +9,6 @@ export function parseCommand(userInput) {
   } else if (command === 'COURSE') {
     handleCourseCommand(subcommand, rest);
   } else {
-    console.error('Command is not found');
+    console.error(chalk.red('Command is not found'));
   }
 }

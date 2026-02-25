@@ -1,27 +1,39 @@
-import { saveCourseData, loadCourseData } from './storage.js';
+import { loadTraineeData, saveCourseData, loadCourseData } from './storage.js';
+import chalk from 'chalk';
 
 function addCourse(param) {
   if (param.length !== 2) {
-    console.error('ERROR: Must provide course name and start date');
+    console.error(chalk.red('ERROR: Must provide course name and start date'));
     return false;
   }
+
   const [name, startDate] = param;
   const splittedDate = startDate.split('-').map(Number);
   if (splittedDate.length !== 3) {
-    console.error('ERROR: Invalid start date. Must be in yyyy-MM-dd format');
+    console.error(
+      chalk.red('ERROR: Invalid start date. Must be in yyyy-MM-dd format')
+    );
     return false;
   }
+
   const [year, month, day] = splittedDate;
   if (year < 2025 || year > 2050) {
-    console.error('ERROR: Invalid start date. Must be in yyyy-MM-dd format');
+    console.error(
+      chalk.red('ERROR: Invalid start date. Must be in yyyy-MM-dd format')
+    );
     return false;
   } else if (month < 1 || month > 12) {
-    console.error('ERROR: Invalid start date. Must be in yyyy-MM-dd format');
+    console.error(
+      chalk.red('ERROR: Invalid start date. Must be in yyyy-MM-dd format')
+    );
     return false;
   } else if (day < 1 || day > 31) {
-    console.error('ERROR: Invalid start date. Must be in yyyy-MM-dd format');
+    console.error(
+      chalk.red('ERROR: Invalid start date. Must be in yyyy-MM-dd format')
+    );
     return false;
   }
+
   const id = Math.floor(Math.random() * 100000);
   const courses = loadCourseData();
   const newCourse = {
@@ -34,96 +46,101 @@ function addCourse(param) {
   saveCourseData(courses);
   console.log(`CREATED: ${id} ${name} ${startDate}`);
   return newCourse;
-  //     - Missing parameters → `ERROR: Must provide course name and start date`
-  // - Invalid date → `ERROR: Invalid start date. Must be in yyyy-MM-dd format`
-  // TODO: Implement logic
 }
 
 function updateCourse(param) {
   if (param.length !== 3) {
-    console.error('ERROR: Must provide ID, name and start date');
+    console.error(chalk.red('ERROR: Must provide ID, name and start date'));
     return false;
   }
+
   let [id, name, startDate] = param;
   id = Number(id);
   if (isNaN(id)) {
-    console.error('ERROR: ID must be a number');
+    console.error(chalk.red('ERROR: ID must be a number'));
     return false;
   }
+
   const courses = loadCourseData();
   const exists = courses.some((course) => course.id === id);
   if (!exists) {
-    console.error(`ERROR: Course with ID ${id} does not exist`);
+    console.error(chalk.red(`ERROR: Course with ID ${id} does not exist`));
     return false;
   }
+
   const updatedCourses = courses.map((course) =>
     course.id === id ? { ...course, name, startDate } : course
   );
   saveCourseData(updatedCourses);
   console.log(`UPDATED: ${id} ${name} ${startDate}`);
   return true;
-  // - Invalid ID → `ERROR: Course with ID <ID> does not exist`
-  // - Missing parameters → `ERROR: Must provide ID, name and start date.`
-  // TODO: Implement logic
 }
 
 function deleteCourse(param) {
   if (param.length !== 1) {
-    console.error('ERROR: Must provide ID');
+    console.error(chalk.red('ERROR: Must provide ID'));
     return false;
   }
+
   let [id] = param;
   id = Number(id);
   if (isNaN(id)) {
-    console.error('ERROR: ID must be a number');
+    console.error(chalk.red('ERROR: ID must be a number'));
     return false;
   }
+
   const courses = loadCourseData();
   const courseToDelete = courses.find((course) => course.id === id);
   if (!courseToDelete) {
-    console.error(`ERROR: Course with ID ${id} does not exist`);
+    console.error(chalk.red(`ERROR: Course with ID ${id} does not exist`));
     return false;
   }
+
   const updatedCourses = courses.filter((course) => course.id !== id);
   saveCourseData(updatedCourses);
   console.log(`DELETED: ${id} ${courseToDelete.name}`);
   return true;
-  // Invalid ID → ERROR: Course with ID <ID> does not exist
-  // TODO: Implement logic
 }
 
-function joinCourse(param) {
+export function joinCourse(param) {
   if (param.length !== 2) {
-    console.error('ERROR: Must provide course ID and trainee ID');
+    console.error(chalk.red('ERROR: Must provide course ID and trainee ID'));
     return false;
   }
-  let [courseID, traineeID] = param.map(Number);
+
+  const [courseID, traineeID] = param.map(Number);
   if (isNaN(courseID) || isNaN(traineeID)) {
-    console.error('ERROR: course ID and trainee ID must be numbers');
+    console.error(chalk.red('ERROR: course ID and trainee ID must be numbers'));
     return false;
   }
 
   const courses = loadCourseData();
   const updatedCourse = courses.find((c) => c.id === courseID);
   if (!updatedCourse) {
-    console.error(`ERROR: Course with ID ${courseID} does not exist`);
+    console.error(
+      chalk.red(`ERROR: Course with ID ${courseID} does not exist`)
+    );
     return false;
   }
 
   const trainees = loadTraineeData();
   const trainee = trainees.find((t) => t.id === traineeID);
   if (!trainee) {
-    console.error(`ERROR: Trainee with ID ${traineeID} does not exist`);
+    console.error(
+      chalk.red(`ERROR: Trainee with ID ${traineeID} does not exist`)
+    );
     return false;
   }
 
   if (updatedCourse.participants.includes(traineeID)) {
-    console.error(`ERROR: The Trainee has already joined this course`);
+    console.error(
+      chalk.red(`ERROR: The Trainee has already joined this course`)
+    );
     return false;
   }
 
   if (updatedCourse.participants.length >= 20) {
-    console.error(`ERROR: The course is full`);
+    console.error(chalk.red(`ERROR: The course is full`));
     return false;
   }
 
@@ -132,7 +149,7 @@ function joinCourse(param) {
       .length >= 5
   ) {
     console.error(
-      `ERROR: A trainee is not allowed to join more than 5 courses`
+      chalk.red(`ERROR: A trainee is not allowed to join more than 5 courses`)
     );
     return false;
   }
@@ -146,25 +163,123 @@ function joinCourse(param) {
     `${trainee.firstName} ${trainee.lastName} joined ${updatedCourse.name}`
   );
   return true;
-  //   - Missing parameters → `ERROR: Must provide course ID and trainee ID`
-  // - Invalid course ID → `ERROR: Course with ID <ID> does not exist`
-  // - Invalid trainee ID → `ERROR: Trainee with ID <ID> does not exist`
-  // - Trainee has already joined the course → `ERROR: The Trainee has already joined this course`
-  // - Course has reached maximum participants (20) → `ERROR: The course is full.`
-  // - Trainee has reached maximum course enrolments (5) → `ERROR: A trainee is not allowed to join more than 5 courses.`
-  // TODO: Implement logic
 }
 
-function leaveCourse() {
-  // TODO: Implement logic
+function leaveCourse(param) {
+  if (param.length !== 2) {
+    console.error(chalk.red('ERROR: Must provide course ID and trainee ID'));
+    return false;
+  }
+
+  const [courseID, traineeIDtoLeave] = param.map(Number);
+  if (isNaN(courseID) || isNaN(traineeIDtoLeave)) {
+    console.error(chalk.red('ERROR: course ID and trainee ID must be numbers'));
+    return false;
+  }
+
+  const courses = loadCourseData();
+  const course = courses.find((c) => c.id === courseID);
+  if (!course) {
+    console.error(
+      chalk.red(`ERROR: Course with ID ${courseID} does not exist`)
+    );
+    return false;
+  }
+
+  const trainees = loadTraineeData();
+  const traineeToLeave = trainees.find((t) => t.id === traineeIDtoLeave);
+  if (!traineeToLeave) {
+    console.error(
+      chalk.red(`ERROR: Trainee with ID ${traineeIDtoLeave} does not exist`)
+    );
+    return false;
+  }
+
+  if (!course.participants.includes(traineeIDtoLeave)) {
+    console.error(chalk.red(`ERROR: The Trainee did not join the course`));
+    return false;
+  }
+
+  const courseParticipants = course.participants.filter(
+    (traineeID) => traineeID !== traineeIDtoLeave
+  );
+
+  const updatedCourses = courses.map((c) =>
+    c.id === courseID ? { ...course, participants: courseParticipants } : c
+  );
+
+  saveCourseData(updatedCourses);
+  console.log(
+    `${traineeToLeave.firstName} ${traineeToLeave.lastName} left ${course.name}`
+  );
+  return true;
 }
 
-function getCourse() {
-  // TODO: Implement logic
+function getCourse(param) {
+  if (param.length !== 1) {
+    console.error(chalk.red('ERROR: Must provide ID'));
+    return false;
+  }
+
+  let [id] = param;
+  id = Number(id);
+  if (isNaN(id)) {
+    console.error(chalk.red('ERROR: ID must be a number'));
+    return false;
+  }
+
+  const courses = loadCourseData();
+  const foundCourse = courses.find((course) => course.id === id);
+  if (!foundCourse) {
+    console.error(chalk.red(`ERROR: Course with ID ${id} does not exist`));
+    return false;
+  }
+
+  const trainees = loadTraineeData();
+
+  const totalNum = foundCourse.participants.length;
+  const normalizedData = foundCourse.participants.map((participantID) =>
+    trainees.find((trainee) => trainee.id === participantID)
+  );
+  // const findParticipant = (participantID) =>
+  //   trainees.find((participant) => participant.id === participantID);
+  // const participantsList = foundCourse.participants
+  //   .map(
+  //     (participantID) =>
+  //       `- ${participantID} ${findParticipant(participantID).firstName} ${findParticipant(participantID).lastName}`
+  //   )
+  //   .join('\n');
+
+  const participantsList = normalizedData
+    .map(({ id, firstName, lastName }) => `- ${id} ${firstName} ${lastName}`)
+    .join('\n');
+
+  console.log(`
+${id} ${foundCourse.name} ${foundCourse.startDate}
+Participants (${totalNum}):
+${participantsList}`);
 }
 
 function getAllCourses() {
-  // TODO: Implement logic
+  const courses = loadCourseData();
+  const sortedCourses = courses.sort((a, b) =>
+    a.startDate.localeCompare(b.startDate)
+  );
+
+  const coursesOutput = sortedCourses
+    .map(({ id, name, startDate, participants }) => {
+      const isFull = participants.length >= 20 ? 'Full' : '';
+      return `${id} ${name} ${startDate} ${participants.length} ${isFull}`;
+    })
+    .join('\n');
+  const totalNum = sortedCourses.length;
+  console.log(`
+Courses:
+${coursesOutput}
+
+Total: ${totalNum}
+`);
+  return true;
 }
 
 export function handleCourseCommand(subcommand, args) {
@@ -191,8 +306,7 @@ export function handleCourseCommand(subcommand, args) {
       return getAllCourses();
 
     default:
-      console.error(`Unknown trainee subcommand: ${subcommand}`);
+      console.error(chalk.red(`Unknown course subcommand: ${subcommand}`));
       return false;
   }
-  // Read the subcommand and call the appropriate function with the arguments
 }
